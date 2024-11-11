@@ -16,7 +16,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
   mail:
-    host: localhost
+    host: 127.0.0.1
     port: 1025
     username: root
     password: root
@@ -35,7 +35,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 1^%ru_rov#550jcliqmt_a8ueft)rk7ox-0)dunxi76a06wx9-
+      secret-key: etHOMrUVk+wc8pZedUjMbRCX2NZ6CoS5eBvFs3DdWrQ=
       expiration: 86400000
   mailing:
     frontend:
