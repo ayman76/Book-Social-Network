@@ -1,5 +1,6 @@
 package com.example.book_social_netwok.handler;
 
+import com.example.book_social_netwok.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handle(MessagingException ex){
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
+                .body(
+                        ExceptionResponse.builder()
+                                .error(ex.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExceptionResponse> handle(OperationNotPermittedException ex){
+        return ResponseEntity
+                .status(BAD_REQUEST)
                 .body(
                         ExceptionResponse.builder()
                                 .error(ex.getMessage())

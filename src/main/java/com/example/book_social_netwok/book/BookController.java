@@ -40,4 +40,51 @@ public class BookController {
         return ResponseEntity.ok(bookService.findAllBooks(pageNum, pageSize, connectedUser));
     }
 
+    @GetMapping("/owner")
+    public ResponseEntity<PageResponse<BookResponse>> findAllBooksByOwner(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int pageNum,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int pageSize,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(bookService.findAllBooksByOwner(pageNum, pageSize, connectedUser));
+    }
+
+    @GetMapping("/borrowed")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int pageNum,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int pageSize,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(bookService.findAllBorrowedBooks(pageNum, pageSize, connectedUser));
+    }
+
+    @GetMapping("/returned")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllReturnedBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int pageNum,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int pageSize,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(bookService.findAllReturnedBooks(pageNum, pageSize, connectedUser));
+    }
+
+    @PatchMapping("/sharable/{book-id}")
+    public ResponseEntity<Integer> updateSharableStatus(
+            @PathVariable("book-id") Integer bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(bookService.updateSharableStatus(bookId, connectedUser));
+    }
+
+
+    @PatchMapping("/archived/{book-id}")
+    public ResponseEntity<Integer> updateArchivedStatus(
+            @PathVariable("book-id") Integer bookId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(bookService.updateArchivedStatus(bookId, connectedUser));
+    }
+
+    
+
+
 }

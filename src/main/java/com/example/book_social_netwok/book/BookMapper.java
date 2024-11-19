@@ -1,5 +1,6 @@
 package com.example.book_social_netwok.book;
 
+import com.example.book_social_netwok.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +29,18 @@ public class BookMapper {
                 .owner(book.getOwner().fullName())
                 //todo implement cover later
                 //.cover()
+                .build();
+    }
+
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory bookTransactionHistory) {
+        return BorrowedBookResponse.builder()
+                .id(bookTransactionHistory.getBook().getId())
+                .title(bookTransactionHistory.getBook().getTitle())
+                .authorName(bookTransactionHistory.getBook().getAuthorName())
+                .isbn(bookTransactionHistory.getBook().getIsbn())
+                .rate(bookTransactionHistory.getBook().getRate())
+                .returned(bookTransactionHistory.isReturned())
+                .returnApproved(bookTransactionHistory.isReturnedApproved())
                 .build();
     }
 }
