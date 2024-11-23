@@ -2,6 +2,7 @@ package com.example.book_social_netwok.book;
 
 import com.example.book_social_netwok.common.PageResponse;
 import com.example.book_social_netwok.exception.OperationNotPermittedException;
+import com.example.book_social_netwok.file.FileStorageService;
 import com.example.book_social_netwok.history.BookTransactionHistory;
 import com.example.book_social_netwok.history.BookTransactionHistoryRepository;
 import com.example.book_social_netwok.user.User;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final BookTransactionHistoryRepository bookTransactionHistoryRepository;
+    private final FileStorageService fileStorageService;
 
     public Integer save(BookRequest bookRequest, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
@@ -191,5 +194,16 @@ public class BookService {
 
         bookTransactionHistory.setReturnedApproved(true);
         return bookTransactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(MultipartFile file, Authentication connectedUser, Integer bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("No Book found with ID: " + bookId));
+
+        User user = (User) connectedUser.getPrincipal();
+
+        String bookCoverPath = fileStorageService.saveFile(file, user.getId());
+        book.setBookCover(bookCoverPath);
+        bookRepository.save(book);
     }
 }
